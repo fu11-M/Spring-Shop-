@@ -1,0 +1,15 @@
+<div class="nav" th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+    <a class="logo" href="/index">SpringMall</a>
+    <a href="/list">List</a>
+
+<!--    관리자만 사용 가능한 페이지로 구현-->
+    <a href="/write">Write</a>
+
+<!--&lt;!&ndash;    로그인된 유저&ndash;&gt;-->
+<!--    <span sec:authentication="principal.username"></span>-->
+
+<!--&lt;!&ndash;    로그아웃&ndash;&gt;-->
+<!--    <div sec:authorize="isAuthenticated()">-->
+<!--        <a href="/logout">로그아웃</a>-->
+<!--    </div>-->
+</div>

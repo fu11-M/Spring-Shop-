@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/main.css" rel = "stylesheet">
+</head>
+<body>
+<div th:replace="~{nav.html::navbar}"></div>
+
+<h4>마이페이지임</h4>
+
+<!--<div sec:authentication="principal"></div>-->
+<!--<div sec:authentication="principal.username"></div>-->
+<!--<div sec:authentication="principal.authorities"></div>-->
+
+<div sec:authorize="isAuthenticated">
+    <h4>로그인 된 사람만 보여주기</h4>
+    <p>안녕하세요, <span sec:authentication="principal.username"></span>님</p>
+</div>
+
+<div sec:authorize="!isAuthenticated">
+    <h4>로그인하지 않은 사용자에게 보여줄 내용</h4>
+    <p>로그인 해주세요</p>
+</div>
+
+<!--&lt;!&ndash;이런 권한이 있는 사람만 이 html 페이지만 보여준다.&ndash;&gt;-->
+<div sec:authorize="hasAuthority('일반유저')">
+    <h4>이 유저는 일반유저 권한임</h4>
+</div>
+</body>
+</html>

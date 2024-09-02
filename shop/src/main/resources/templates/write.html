@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/main.css" rel = "stylesheet">
+    <style>
+        #preview {
+           width: 300px;  /* 가로 크기 */
+           height: 300px; /* 세로 크기 */
+       }
+    </style>
+</head>
+<body>
+    <div th:replace="~{nav.html::navbar}"></div>
+
+    <form action="/add" method="post">
+        <p>상품명</p>
+        <input name="title">
+
+        <p>가격</p>
+        <input name="price">
+
+        <p>상품이미지</p>
+        <input type="file" onchange="getURL(this)">
+        <br>
+        <img id = "preview" src="#">
+        <br>
+
+        <input type="hidden" id="imageUrl" name="imageUrl">
+        <button type="submit">전송</button>
+    </form>
+
+<!--    presignedURL 발급 요청-->
+    <script>
+<!--        async function getURL(e){-->
+<!--            let file = e.files[0];-->
+
+<!--            //파일을 읽어 미리보기 이미지로 설정-->
+<!--            let reader = new FileReader();-->
+<!--            reader.onload = function(event){-->
+<!--                document.getElementById('preview').src = event.target.result;-->
+<!--            };-->
+<!--            reader.readAsDataURL(file);-->
+
+<!--            let name = encodeURIComponent(e.files[0].name);-->
+<!--            let result = await fetch('/presigned-url?filename=' + name);-->
+<!--            result = await result.text();-->
+<!--            console.log(result);-->
+
+<!--            let print = await fetch(result, {-->
+<!--                method : 'PUT',-->
+<!--                body : e.files[0]-->
+<!--            })-->
+
+<!--            console.log(print)-->
+<!--            console.log(print.url.split("?")[0])-->
+
+<!--            if(print.ok){-->
+<!--                document.querySelector('img').src = print.url.split("?")[0]-->
+<!--            }-->
+<!--        }-->
+        async function getURL(e) {
+    let file = e.files[0];
+
+    // Read file and set preview image
+    let reader = new FileReader();
+    reader.onload = function(event) {
+        document.getElementById('preview').src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Get presigned URL from the server
+    let name = encodeURIComponent(file.name);
+    let response = await fetch('/presigned-url?filename=' + name);
+    let presignedUrl = await response.text();  // Assume the server returns the presigned URL as text
+
+    // Upload the file to S3 using the presigned URL
+    let uploadResponse = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: file
+    });
+
+    if (uploadResponse.ok) {
+        // Extract the base URL from the presigned URL
+        let imageUrl = presignedUrl.split('?')[0];
+
+        // Store the image URL in the hidden input field
+        document.getElementById('imageUrl').value = imageUrl;
+
+        // Optionally update the image preview with the uploaded file URL
+        document.querySelector('#preview').src = imageUrl;
+    } else {
+        console.error('Upload failed');
+    }
+}
+
+    </script>
+</body>
+</html>

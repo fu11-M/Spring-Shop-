@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/main.css" rel = "stylesheet">
+</head>
+<body>
+<div th:replace="~{nav.html::navbar}"></div>
+
+<h4>로그인 하십시오.</h4>
+<form action="/loginCheck" method="POST">
+    <input name="username">
+    <input name="password" type="password">
+    <button type="submit">전송</button>
+</form>
+
+<!--현재 url의 쿼리 스트링이 들어있다.-->
+<div th:if="${param.error}">
+    <h4>아이디나 비밀번호 틀림</h4>
+</div>
+
+</body>
+</html>

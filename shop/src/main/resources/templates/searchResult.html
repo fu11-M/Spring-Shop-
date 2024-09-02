@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/main.css" rel = "stylesheet">
+</head>
+<body>
+<div th:replace="~{nav.html::navbar}"></div>
+
+<div class ="card" th:each="i : ${items}">
+    <img src = "https://placehold.co/300">
+    <div>
+        <!--            상품 번호 -->
+        <h4 th:text="${i.id}"></h4>
+
+        <!--            <h4 th:text="${i.title}"></h4>-->
+        <!--            상품이름 + 상세 정보-->
+        <a th:href="@{'/detail/' + ${i.id}}" th:text="${i.title}">링크</a>
+
+        <!--            상품 가격-->
+        <!--            <p th:text="${items.get(0).price}"></p>-->
+        <h4 th:text="${i.price}"></h4>
+
+        <!--            수정페이지-->
+        <!--            <a href="/edit/1">✏️</a>-->
+        <a th:href="@{'/edit/' + ${i.id}}">✏️</a>
+
+        <span th:onclick="fetch('/item?id=[[${i.id}]]', {method : 'DELETE'})
+            .then(r => r.text())
+            .then(() => {
+                location.reload();
+            })
+            ">🗑️</span>
+        <span th:onclick=""></span>
+    </div>
+</div>
+<a href="/list/page/1">1번페이지</a>
+<a href="/list/page/2">2번페이지</a>
+<a href="/list/page/3">3번페이지</a>
+</body>
+</html>
