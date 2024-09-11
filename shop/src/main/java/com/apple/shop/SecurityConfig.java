@@ -1,134 +1,161 @@
 package com.apple.shop;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 
-@RequiredArgsConstructor
-@Configuration //클래스에 @Configuration, @EnableWebSecurity 어노테이션을 사용하면 Spring Scurity설정을 할 수 있다.
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final MyUserDetailsService myUserDetailsService;
 
+    public SecurityConfig(MyUserDetailsService myUserDetailsService) {
+        this.myUserDetailsService = myUserDetailsService;
+    }
+
     @Bean
-    PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //SecurityFilterChain 메서드는 어떤 페이지를 로그인 검사할지를 설정하는 메서드이다.
-    //FilterChain은 모든 유저의 요청과 서버의 응답 사이에 자동으로 실행해주고 싶은 코드를 담는 곳이다.
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //CSRF 보안 기능도 끄기 위한 코드
-        //CSRF : API를 하나 만들어두면 다른사이트에서도 내가 만든 API를 요청할 수 있다.
-        //ex 다른사이트.com 에서 <form action = "내사이트.com/write"> 와 같은 형태이다.
-        //이렇게 해두면 다른 사이트에서 나의 사이트에 글을 올릴 수 있는데 이러한 공격을 CSRF공격이라고 한다.
-        //이것을 방지하기 위해서 CSRF 방지 기능을 켜준다.
-        //CSRF 방지 기능을 키게 되면 내사이트에 있는 <form> 태그를 사용하면 서버에서 발급한 랜덤문자를 제공하고
-        //form으로 서버에 제출하게 되면 서버에서 발급한 랜덤문자를 확인하고 서버에서 발급한 것이 맞다면 통과시켜 준다.
-
-//        http.csrf((csrf) -> csrf.disable());
-//        http.authorizeHttpRequests(authorize -> authorize
-//                .requestMatchers("/**").permitAll()  // Allow access to login and register pages
-//                .anyRequest().authenticated()  // Require authentication for any other request
-//        );
-
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(authorize ->
-//                        authorize
-//                                .requestMatchers("/**").permitAll()
-//                                .anyRequest().authenticated()
-//                );
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/login")  // 로그인 페이지 경로
+//                        .loginProcessingUrl("/login")  // 로그인 요청 URL
+//                        .defaultSuccessUrl("/index", true)  // 로그인 성공 후 이동할 URL
+//                        .failureUrl("/login?error=true")  // 로그인 실패 후 이동할 URL
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")  // 로그아웃 URL
+//                        .logoutSuccessUrl("/login?logout=true")  // 로그아웃 후 이동할 URL
+//                )
+//                .userDetailsService(myUserDetailsService);  // UserDetailsService 설정
 //
-//        http.formLogin((formLogin)
-//                -> formLogin.loginPage("/login")
-//                .defaultSuccessUrl("/index",true)
-//        );
-//
-//        http.logout(logout -> logout.logoutUrl("/logout"));
-//        http.userDetailsService(myUserDetailsService);
 //        return http.build();
+//    }
+//}
 
-        http.csrf((csrf) -> csrf.disable());
-        http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/**").permitAll());
-        http.formLogin((formLogin) -> formLogin.loginPage("/login")
-                .defaultSuccessUrl("/index")
-        );
-        return http.build();
-    }
-}
 
-//package com.apple.shop;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-//import org.springframework.security.web.SecurityFilterChain;
-//
+// ------------------------------------------------------------------------------------------------------------------
 //@Configuration
 //@EnableWebSecurity
 //public class SecurityConfig {
-//    @Bean // 스프링이 이 코드를 가져가서 bean으로 만들어준다.
-//    BCryptPasswordEncoder passwordEncoder(){
+//
+//    private final MyUserDetailsService myUserDetailsService;
+//
+//    public SecurityConfig(MyUserDetailsService myUserDetailsService) {
+//        this.myUserDetailsService = myUserDetailsService;
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
 //    }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//        manager.createUser(User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build());
-//        manager.createUser(User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("admin")
-//                .roles("ADMIN")
-//                .build());
-//        return manager;
-//    }
-//
-//
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable()) // 개발 중에는 CSRF 비활성화, 운영 환경에서는 활성화 권장
-//                .authorizeHttpRequests(authorize ->
-//                        authorize
-//                                .requestMatchers("/admin/**").hasRole("ADMIN")
-//                                .requestMatchers("/user/**").hasRole("USER")
-//                                .anyRequest().permitAll()
+//        http.csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/login", "/register", "/resources/**").permitAll()
+//                        .anyRequest().authenticated()
 //                )
-//                .formLogin(form ->
-//                        form
-//                                .loginPage("/login")
-//                                .permitAll()
+//                .formLogin(form -> form
+//                        .loginPage("/login")  // 커스터마이즈된 로그인 페이지 경로
+//                        .loginProcessingUrl("/login")  // 로그인 폼의 action URL
+//                        .defaultSuccessUrl("/index", true)  // 로그인 성공 시 이동할 페이지
+//                        .failureUrl("/login?error=true")  // 로그인 실패 시 이동할 페이지
 //                )
-//                .logout(logout ->
-//                        logout
-//                                .permitAll()
-//                );
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout=true")
+//                )
+//                .userDetailsService(myUserDetailsService);  // 사용자 정보 서비스 설정
 //
-//        //폼으로 로그인
-//        http.formLogin((formLogin) -> formLogin.loginPage("/login")
-//                        .defaultSuccessUrl("/index") // 성공시 url
-//                        //.failureUrl("/fail") // 실패시 기본적으로 /login?error로 이동함 굳이 x
-//                );
-//
-//        //로그아웃
-//        http.logout(logout -> logout.logoutUrl("/logout"));
 //        return http.build();
 //    }
+
+//-------------------------------------------------------------------------------------------------------------------
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/index", true)
+//                )
+//                .logout(logout -> logout.logoutUrl("/logout"))
+//                .userDetailsService(myUserDetailsService);  // 이 라인 확인
 //
-//}
+//        return http.build();
+//    }
+
+    //-------------------------------------------------------------------------------------------------------------------
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/index", true)
+//                )
+//                .logout(logout -> logout.logoutUrl("/logout"))
+//                .userDetailsService(myUserDetailsService);  // 이 라인 확인
+//
+//        return http.build();
+//    }
+
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable());
+
+//        http.sessionManagement((session) -> session
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        );
+
+//        http.addFilterBefore(new JwtFilter(), ExceptionTranslationFilter.class);
+
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/index",
+                                "/mypage",
+                                "/write",
+                                "/list",
+                                "/register",
+                                "/login",
+                                "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/index", true)
+                )
+
+                .logout(logout -> logout.logoutUrl("/logout"))
+                .userDetailsService(myUserDetailsService);
+
+        return http.build();
+    }
+
+}
