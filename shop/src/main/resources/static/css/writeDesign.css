@@ -1,0 +1,83 @@
+/* 페이지 레이아웃 - 중앙 배치 */
+body {
+    background: linear-gradient(135deg, #D8BFD8 40%, #FFD700 100%); /* 배경 그라디언트 */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* 화면 전체 높이를 차지 */
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    flex-direction: column; /* 상단 고정 네비게이션과 폼을 세로로 배치 */
+}
+
+/* 폼 스타일 */
+form {
+    background-color: #FFF;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 그림자 */
+    max-width: 600px;
+    width: 100%; /* 폼을 최대 600px로 고정 */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+form p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #4B0082;
+}
+
+form input[type="text"], form input[type="number"] {
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+form input[type="file"] {
+    margin: 20px 0;
+}
+
+#preview {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 2px solid #DDD;
+}
+
+button {
+    background-color: #4B0082;
+    color: #FFF;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #6A0DAD;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
