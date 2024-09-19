@@ -1,0 +1,67 @@
+/* Overall body and layout settings */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #D8BFD8, #FFDAB9); /* Smooth gradient from purple to peach */
+    color: #4B0082; /* Dark purple text for general body text for contrast */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Sales container styling for central alignment and padding */
+.sales-container {
+    width: 80%;
+    max-width: 1200px; /* Maximum width to ensure content is not too stretched on larger screens */
+    margin: 100px auto; /* Centered with top and bottom margin */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow to lift container off the background */
+    text-align: center;
+}
+
+/* Heading styling */
+h2 {
+    color: #4B0082;
+    font-size: 28px; /* Slightly larger for emphasis */
+    margin-bottom: 20px; /* Space below heading */
+}
+
+/* Individual sales item styling */
+.sales-item {
+    padding: 15px;
+    margin: 15px 0;
+    background-color: #f9f9f9; /* Light grey background for each item */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow for each sales item */
+}
+
+/* Strong tag styling for labels like '상품명', '가격', '주문자' */
+.sales-item strong {
+    color: #333333; /* Darker color for emphasis */
+    font-weight: bold;
+}
+
+/* Span styling for details within each sales item */
+.sales-item span {
+    display: block; /* Each span takes a new line */
+    margin-bottom: 5px; /* Spacing between each detail line */
+    font-size: 16px; /* Sufficiently large for readability */
+    color: #4B0082; /* Matching the text color with the general theme */
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .sales-container {
+        width: 90%; /* Slightly more width for small screens */
+        margin: 50px auto; /* Reduced margin for smaller screens */
+    }
+
+    h2 {
+        font-size: 24px; /* Slightly smaller on small screens */
+    }
+
+    .sales-item {
+        padding: 10px; /* Slightly less padding on small screens */
+    }
+}
