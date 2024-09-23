@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpringMall - 회사 소개</title>
+    <link href="/css/indexDesign.css" rel="stylesheet">
+    <style>
+        /* 기본적인 레이아웃 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* 헤더 스타일 */
+        .header {
+            background-color: #4B0082;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .header .logo h1 {
+            margin: 0;
+        }
+
+        .header .logo h1 a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #FFD700;
+        }
+
+        /* 회사 소개 섹션 */
+        .about-section {
+            background-color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 48px;
+            color: #4B0082;
+            margin-bottom: 30px;
+        }
+
+        .about-section p {
+            font-size: 20px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            color: #333;
+        }
+
+        /* 푸터 스타일 */
+        .footer {
+            background-color: #4B0082;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<!-- 헤더 -->
+<header class="header">
+    <div class="logo">
+        <h1><a href="/">SpringMall</a></h1>
+    </div>
+    <nav class="nav">
+        <a href="/">메인 페이지</a>
+        <a href="/list">상품 목록</a>
+        <a href="/contact">문의하기</a>
+    </nav>
+</header>
+
+<!-- 회사 소개 섹션 -->
+<section class="about-section">
+    <h2>회사 소개</h2>
+    <p>
+        SpringMall은 최고의 쇼핑 경험을 제공하기 위해 설립된 온라인 쇼핑몰입니다.
+        고객들에게 다양한 상품을 합리적인 가격에 제공하며,
+        빠르고 안전한 배송을 통해 최상의 서비스를 제공하고 있습니다.
+    </p>
+    <p>
+        저희의 목표는 고객 만족을 최우선으로 생각하며,
+        최신 트렌드에 맞춘 상품들을 엄선하여 제공합니다.
+        SpringMall은 여러분의 일상에 특별함을 더할 수 있도록 끊임없이 노력하고 있습니다.
+    </p>
+    <p>
+        저희는 신뢰와 투명성을 바탕으로 한 비즈니스를 추구하며,
+        모든 고객이 믿고 이용할 수 있는 쇼핑 플랫폼을 목표로 하고 있습니다.
+    </p>
+</section>
+
+<!-- 푸터 -->
+<footer class="footer">
+    <p>© 2024 SpringMall. All Rights Reserved.</p>
+</footer>
+</body>
+</html>
