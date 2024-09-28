@@ -1,5 +1,7 @@
 package com.apple.shop;
 
+import com.apple.shop.comment.Comment;
+import com.apple.shop.comment.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,17 +21,24 @@ public class ItemController {
     private final ItemService itemService;
     private final AnnouncementRepository announcementRepository;
     private final S3Service s3Service;
+    private final CommentRepository commentRepository;
 
     // @RequiredArgsConstructor를 사용하지 않는 경우, 스프링은 @Autowired 어노테이션을 통해 의존성 주입을 관리한다.
     // @Autowired 어노테이션은 스프링이 자동으로 ItemRepository 타입의 적절한 빈(bean)을 찾아서 ItemController에 주입한다.
     // 이를 통해 ItemController는 ItemRepository의 구현체가 어떻게 변하든 그 변경에 영향을 받지 않고 안정적으로 기능을 수행할 수 있다.
     // 만약 @Autowired 어노테이션이 없으면, ItemRepository의 구현체에 대한 변경이 ItemController에 직접적인 영향을 미칠 수 있다.
     @Autowired
-    public ItemController(ItemRepository itemRepository, ItemService itemService, AnnouncementRepository announcementRepository, S3Service s3Service) {
+    public ItemController(ItemRepository itemRepository,
+                          ItemService itemService,
+                          AnnouncementRepository announcementRepository,
+                          S3Service s3Service,
+                          CommentRepository commentRepository
+    ) {
         this.itemRepository = itemRepository;
         this.itemService = itemService;
         this.announcementRepository = announcementRepository;
         this.s3Service = s3Service;
+        this.commentRepository = commentRepository;
     }
 
     @GetMapping("/list")
@@ -86,26 +95,71 @@ public class ItemController {
     //  URL 파라미터 문법을 사용하여 비슷한 URL의 API를 여러개 만들 필요가 없다.
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Integer id, Model model) {
-    //  try문법안에 있는 코드들이 에러가 발생한다면 catch문의 코드를 실행한다는 의미이다.
-        try{
-            // Optional타입을 사용해야 하는 이유는 findById 메서드 결과를 Optional로 반환되어 있게 설계되어 있기 때문이다.
-            // 결과가 있을 수도 없을 수도 있어 데이터를 못찾을 수 있기 때문에 Optional를 사용한다.
+        //  try문법안에 있는 코드들이 에러가 발생한다면 catch문의 코드를 실행한다는 의미이다.
+//        try {
+//            // Optional타입을 사용해야 하는 이유는 findById 메서드 결과를 Optional로 반환되어 있게 설계되어 있기 때문이다.
+//            // 결과가 있을 수도 없을 수도 있어 데이터를 못찾을 수 있기 때문에 Optional를 사용한다.
+//            Optional<Item> result = itemRepository.findById(id);
+//            //result 변수로 값을 가져 오려면 result에 .get을 사용해야 한다.
+//            //하지만 .get()을 사용하면 서버에 위함하다 그 이유는 값이 없을 수 있기 때문에 .get()을 사용하면 값을 가져오지 못해 에러가 난다.
+//            //System.out.println(result.get());
+//
+//            if (result.isPresent()) {
+//                model.addAttribute("data", result.get());
+//                return "detail.html";
+//            } else {
+//                return "redirect:/list";
+//            }
+//        } catch (Exception exception) {
+//            System.out.println(exception.getMessage());
+//            return "redirect:/list";
+//        }
+        try {
             Optional<Item> result = itemRepository.findById(id);
-            //result 변수로 값을 가져 오려면 result에 .get을 사용해야 한다.
-            //하지만 .get()을 사용하면 서버에 위함하다 그 이유는 값이 없을 수 있기 때문에 .get()을 사용하면 값을 가져오지 못해 에러가 난다.
-            //System.out.println(result.get());
 
             if (result.isPresent()) {
-                model.addAttribute("data", result.get());
+                Item item = result.get();
+                model.addAttribute("data", item);
+
+                // 댓글 목록을 추가로 가져와서 모델에 추가
+                List<Comment> comments = commentRepository.findAllByParentId(id);
+                model.addAttribute("comments", comments);
+
                 return "detail.html";
             } else {
                 return "redirect:/list";
             }
-        }catch (Exception exception){
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
             return "redirect:/list";
         }
     }
+
+//        -------------------------------------------------------------------------------------------
+//        try {
+//            // 1. 먼저 Item을 조회
+//            Optional<Item> itemResult = itemRepository.findById(id);
+//
+//            if (itemResult.isPresent()) {
+//                // Item을 모델에 추가
+//                Item item = itemResult.get();
+//                model.addAttribute("itemData", item);
+//
+//                // 2. 해당 Item과 관련된 댓글(Comment)을 조회하여 모델에 추가
+//                List<Comment> comments = commentRepository.findAllByParentId(item.getId());
+//                model.addAttribute("comments", comments);
+//
+//                return "detail.html";
+//            } else {
+//                // Item이 존재하지 않으면 리스트 페이지로 리다이렉트
+//                return "redirect:/list";
+//            }
+//        } catch (Exception exception) {
+//            // 예외가 발생하면 리스트 페이지로 리다이렉트
+//            System.out.println(exception.getMessage());
+//            return "redirect:/list";
+//        }
+//}
 
     //모든 API의 에러를 캐치하려면 @ExceptionHandler를 사용하면 된다.
     //class안에 있는 모든 API에서 Exception 발생시 안의 코드를 실행해준다.
@@ -155,7 +209,7 @@ public class ItemController {
     String getListPage(Model model, @PathVariable Integer pagenation){
         //일부 테이블을 가져오는 함수
         //slice
-        Page<Item> result = itemRepository.findPageBy(PageRequest.of(pagenation - 1, 5));// (몇번째 페이지, 페이지당 몇개)
+        Page<Item> result = itemRepository.findPageBy(PageRequest.of(pagenation - 1, 12));// (몇번째 페이지, 페이지당 몇개)
         model.addAttribute("items", result);
         System.out.println(result.getTotalPages());
         System.out.println(result.hasNext());

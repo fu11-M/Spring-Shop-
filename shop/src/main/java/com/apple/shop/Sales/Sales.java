@@ -1,13 +1,10 @@
 package com.apple.shop.Sales;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.apple.shop.member.Member;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,9 +20,14 @@ public class Sales {
     private String itemName;
     private Integer price;
     private Integer count;
-//    String username;
-//    String displayName;
-    private Integer memberId;
+//    private String username;
+//    private String displayName;
+
+//    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT)) // Foreign key 제약 조건 자동x
+    private Member member;
+
     @CreationTimestamp //행이 추가될 때 현재시간을 자동으로 채워준다.
     private LocalDateTime created;
 }

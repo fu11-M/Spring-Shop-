@@ -1,9 +1,35 @@
+
 <div class="nav" th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+    <link href="/css/navDesign.css" rel = "stylesheet">
     <a class="logo" href="/index">SpringMall</a>
-    <a href="/list">List</a>
+
+    <div>
+        <a href="/list">상품목록</a>
+    </div>
+
+    <div sec:authorize="!isAuthenticated()">
+        <a href="/login">로그인</a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+        <a href="/write">상품 추가</a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+        <span th:text="'환영합니다, ' + ${#authentication.name} + ' 님!'"></span>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+        <a href="/logout">로그아웃</a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+        <a href="/order/all">주문 내역</a>
+    </div>
+</div>
 
 <!--    관리자만 사용 가능한 페이지로 구현-->
-    <a href="/write">Write</a>
+
 
 <!--&lt;!&ndash;    로그인된 유저&ndash;&gt;-->
 <!--    <span sec:authentication="principal.username"></span>-->
@@ -12,4 +38,3 @@
 <!--    <div sec:authorize="isAuthenticated()">-->
 <!--        <a href="/logout">로그아웃</a>-->
 <!--    </div>-->
-</div>

@@ -1,0 +1,140 @@
+/* 마이페이지 스타일 */
+body {
+    background: linear-gradient(135deg, #D8BFD8 40%, #FFD700 100%); /* 연보라와 노란색 그라디언트 */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #333; /* 기본 텍스트 컬러 */
+}
+
+.navbar {
+    background-color: #4B0082; /* 연보라색 네비게이션 */
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.navbar a {
+    color: #FFF; /* 흰색 텍스트 */
+    margin: 0 20px;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #FFD700; /* 노란색 링크 호버 */
+}
+
+.container {
+    background-color: #FFF; /* 흰색 카드 */
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 더 깊은 그림자 */
+    max-width: 600px;
+    text-align: center;
+    margin: 100px auto 0; /* 네비게이션 높이를 고려한 마진 */
+    transition: transform 0.3s ease;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.container:hover {
+    transform: translateY(-10px); /* 마우스를 올렸을 때 카드가 살짝 떠오르는 효과 */
+}
+
+h4 {
+    color: #4B0082; /* 연보라색 제목 */
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+p {
+    font-size: 18px;
+    color: #666; /* 다크 그레이 텍스트 */
+    margin: 15px 0;
+}
+
+span#username {
+    font-weight: bold;
+    color: #4B0082; /* 연보라색 강조 */
+}
+
+button {
+    background-color: #4B0082; /* 연보라색 버튼 */
+    color: #FFF;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px; /* 부드러운 둥근 버튼 */
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #6A0DAD; /* 호버 시 더 진한 연보라색 */
+    transform: translateY(-3px); /* 버튼이 살짝 떠오르는 효과 */
+}
+
+.secure-message {
+    color: #4B0082;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.guest-message {
+    color: #666;
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+.authorized-message {
+    color: #FFDA00; /* 노란색 강조 텍스트 */
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px;
+        margin: 70px auto 0;
+    }
+
+    h4 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 12px 25px;
+    }
+}

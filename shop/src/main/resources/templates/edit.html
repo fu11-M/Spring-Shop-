@@ -2,16 +2,20 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="/main.css" rel = "stylesheet">
+    <title>수정 페이지</title>
+    <link href="/css/editDesign.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{nav.html::navbar}"></div>
+
+<!-- 제목 추가 -->
+
 <form action="/edit" method="POST">
+    <h2>상품 수정</h2>
     <input name="id" th:value="${data.id}" style="display:none">
     <input name="title" th:value="${data.title}">
     <input name="price" th:value="${data.price}">
-    <button type="submit">전송</button>
+    <button type="submit">수정</button>
 </form>
 </body>
 </html>

@@ -2,23 +2,119 @@
 <html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="/main.css" rel = "stylesheet">
+    <title>JWT 로그인</title>
+    <link href="/css/loginDesign.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="~{nav.html::navbar}"></div>
-
-<h4>로그인 하십시오.</h4>
-<form action="/loginCheck" method="POST">
-    <input name="username">
-    <input name="password" type="password">
-    <button type="submit">전송</button>
-</form>
-
-<!--현재 url의 쿼리 스트링이 들어있다.-->
-<div th:if="${param.error}">
-    <h4>아이디나 비밀번호 틀림</h4>
+<div class="login-container">
+    <div class="login-box">
+        <h2>로그인</h2>
+        <form action="/login" method="post">
+            <div class="input-group">
+                <input name="username" type="text" placeholder="사용자 이름" required>
+            </div>
+            <div class="input-group">
+                <input name="password" type="password" placeholder="비밀번호" required>
+            </div>
+            <button type="submit" class="login-btn">로그인</button>
+        </form>
+        <p class="signup-link">계정이 없으신가요? <a href="/register">회원가입</a></p>
+    </div>
 </div>
-
 </body>
 </html>
+
+<!------------------------------------------------------------------------------->
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>JWT 로그인</title>-->
+<!--    <link href="/loginDesign.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:replace="~{nav.html::navbar}"></div>-->
+
+<!--<h4>로그인</h4>-->
+<!--<form action="/login" method="post">-->
+<!--    <input name="username"  placeholder="사용자 이름">-->
+<!--    <input name="password" type="password">-->
+<!--    <button type="submit">전송</button>-->
+<!--</form>-->
+<!------------------------------------------------------------------------------->
+
+<!--JWT-->
+<!--<h4>JWT 로그인</h4>-->
+<!--<form id="loginForm" method="post" action="/login/jwt">-->
+<!--    <input name="username" id="username" placeholder="사용자 이름">-->
+<!--    <input name="password" type="password" id="password" placeholder="비밀번호">-->
+<!--    <button type="submit">전송</button>-->
+<!--</form>-->
+
+<!--&lt;!&ndash; AJAX &ndash;&gt;-->
+<!--<script>-->
+<!--    document.getElementById('loginForm').addEventListener('submit', function(event) {-->
+<!--        event.preventDefault();  // 기본 폼 제출 동작 방지-->
+<!--        loginJWT();  // JWT 로그인 함수 호출-->
+<!--    });-->
+
+<!--    function loginJWT() {-->
+<!--        fetch('/login/jwt', {-->
+<!--            method: 'POST',-->
+<!--            headers: {'Content-Type': 'application/json'},-->
+<!--            body: JSON.stringify({-->
+<!--                username: document.querySelector('#username').value,-->
+<!--                password: document.querySelector('#password').value-->
+<!--            })-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {-->
+<!--                throw new Error('로그인 실패');-->
+<!--            }-->
+<!--            return response.text();  // 응답을 텍스트로 처리 (JWT 토큰)-->
+<!--        })-->
+<!--        .then(token => {-->
+<!--            console.log(token);  // JWT 토큰을 콘솔에 출력-->
+<!--            localStorage.setItem('jwt', token);  // JWT 토큰을 localStorage에 저장-->
+<!--            alert("로그인 성공! JWT 토큰이 저장되었습니다.");-->
+<!--        })-->
+<!--        .catch(error => console.error('Error:', error));  // 오류 처리-->
+<!--    }-->
+<!--</script>-->
+
+<!--&lt;!&ndash; JWT 마이페이지 요청 버튼 &ndash;&gt;-->
+<!--<button onclick="getMyPage()">JWT 마이페이지 주세요</button>-->
+<!--<script>-->
+<!--    function getMyPage() {-->
+<!--    const token = localStorage.getItem('jwt');-->
+
+<!--    if (!token) {-->
+<!--        alert("JWT 토큰이 없습니다. 로그인해주세요.");-->
+<!--        return;-->
+<!--    }-->
+
+<!--    fetch('/my_page/jwt', {-->
+<!--        method: 'POST',-->
+<!--        headers: {-->
+<!--            'Authorization': 'Bearer ' + token  // JWT 토큰을 Authorization 헤더에 포함-->
+<!--        }-->
+<!--    })-->
+<!--    .then(response => {-->
+<!--        if (!response.ok) {-->
+<!--            throw new Error('인증 실패');-->
+<!--        }-->
+<!--        return response.text();-->
+<!--    })-->
+<!--    .then(data => {-->
+<!--        console.log(data);  // 서버에서 받은 마이페이지 데이터를 출력-->
+<!--        alert("마이페이지 데이터를 성공적으로 받았습니다.");-->
+<!--        window.location.href = "/my_page/jwt";-->
+<!--    })-->
+<!--    .catch(error => {-->
+<!--        console.error('Error:', error);-->
+<!--        alert("마이페이지 데이터 요청 실패");-->
+<!--    });-->
+<!--}-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

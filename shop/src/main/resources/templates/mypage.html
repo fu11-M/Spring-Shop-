@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="/main.css" rel = "stylesheet">
+    <link href="/css/mypageDesign.css" rel = "stylesheet">
 </head>
+
 <body>
 <div th:replace="~{nav.html::navbar}"></div>
 
-<h4>마이페이지임</h4>
-
-<!--<div sec:authentication="principal"></div>-->
-<!--<div sec:authentication="principal.username"></div>-->
-<!--<div sec:authentication="principal.authorities"></div>-->
+<h4>마이페이지입니다.</h4>
 
 <div sec:authorize="isAuthenticated">
     <h4>로그인 된 사람만 보여주기</h4>
-    <p>안녕하세요, <span sec:authentication="principal.username"></span>님</p>
+    <p>안녕하세요, <span id="username" sec:authentication="principal.username"></span>님</p>
 </div>
 
 <div sec:authorize="!isAuthenticated">
@@ -28,5 +25,122 @@
 <div sec:authorize="hasAuthority('일반유저')">
     <h4>이 유저는 일반유저 권한임</h4>
 </div>
+
 </body>
+<script>
+    window.onload = function() {
+        const usernameElement = document.getElementById('username');
+        const username = usernameElement ? usernameElement.textContent : null;
+
+        if(username){
+            alert(username + "님, 로그인 되셨습니다.");
+        }
+    };
+</script>
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>마이페이지</title>-->
+<!--    <link href="/loginDesign.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body>-->
+<!--<header>-->
+<!--    <nav>-->
+<!--        <div th:replace="~{nav.html::navbar}"></div> &lt;!&ndash; 네비게이션 바 가져오기 &ndash;&gt;-->
+<!--    </nav>-->
+<!--</header>-->
+
+<!--<main>-->
+<!--    <h2>마이페이지</h2>-->
+
+<!--    &lt;!&ndash; 로그인된 사용자에게만 표시되는 영역 &ndash;&gt;-->
+<!--    <div sec:authorize="isAuthenticated()">-->
+<!--        <h3>로그인된 사용자 정보</h3>-->
+<!--        <p>안녕하세요, <span th:text="${username}">사용자</span>님!</p>-->
+<!--        <p>이 페이지는 로그인한 사용자만 볼 수 있습니다.</p>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 로그인되지 않은 사용자에게 표시되는 영역 &ndash;&gt;-->
+<!--    <div sec:authorize="!isAuthenticated()">-->
+<!--        <h3>로그인 해주세요</h3>-->
+<!--        <p>이 페이지는 로그인된 사용자만 접근할 수 있습니다. 로그인을 해주세요.</p>-->
+<!--        <a href="/login">로그인 페이지로 이동</a>-->
+<!--    </div>-->
+<!--</main>-->
+
+<!--<footer>-->
+<!--    <p>© 2024 SpringShop. All rights reserved.</p>-->
+<!--</footer>-->
+
+<!--<script>-->
+<!--    window.onload = function() {-->
+<!--        const usernameElement = document.getElementById('username');-->
+<!--        if(usernameElement && usernameElement.textContent) {-->
+<!--            alert(usernameElement.textContent + "님, 환영합니다!");-->
+<!--        }-->
+<!--    };-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>마이페이지</title>-->
+<!--    <link rel="stylesheet" href="/loginDesign.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div>-->
+<!--    &lt;!&ndash; 네비게이션 바 &ndash;&gt;-->
+<!--    <nav>-->
+<!--        <a href="/">홈</a>-->
+<!--        <a href="/logout">로그아웃</a>-->
+<!--    </nav>-->
+
+<!--    &lt;!&ndash; 마이페이지 내용 &ndash;&gt;-->
+<!--    <h1>마이페이지</h1>-->
+
+<!--    &lt;!&ndash; 로그인된 사용자의 이름 표시 &ndash;&gt;-->
+<!--    <div>-->
+<!--        <p>안녕하세요, <span id="username"></span>님!</p>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 사용자 권한에 따라 다르게 표시 &ndash;&gt;-->
+<!--    <div sec:authorize="hasAuthority('ROLE_USER')">-->
+<!--        <h3>일반 사용자</h3>-->
+<!--        <p>일반 사용자로 로그인하셨습니다.</p>-->
+<!--    </div>-->
+
+<!--    <div sec:authorize="hasAuthority('ROLE_ADMIN')">-->
+<!--        <h3>관리자</h3>-->
+<!--        <p>관리자 권한으로 로그인하셨습니다.</p>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 사용자 정보를 수정할 수 있는 폼 &ndash;&gt;-->
+<!--    <form action="/update_profile" method="post">-->
+<!--        <label for="displayName">이름 수정: </label>-->
+<!--        <input type="text" id="displayName" name="displayName">-->
+<!--        <button type="submit">수정하기</button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; JWT와 사용자 정보를 표시하기 위한 스크립트 &ndash;&gt;-->
+<!--<script>-->
+<!--    window.onload = function() {-->
+<!--        // 서버로부터 받아온 사용자 이름을 표시-->
+<!--        const username = document.querySelector("#username");-->
+
+<!--        // 서버에서 전달된 데이터가 모델에 담겨 올 것이므로 이를 사용-->
+<!--        username.textContent = /*[[${username}]]*/ '사용자 이름';-->
+
+<!--        alert(username.textContent + "님, 마이페이지에 오신 것을 환영합니다.");-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

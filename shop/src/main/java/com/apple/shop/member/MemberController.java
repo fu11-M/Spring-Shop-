@@ -1,19 +1,27 @@
 package com.apple.shop.member;
 
 import com.apple.shop.CustomUser;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -22,6 +30,12 @@ public class MemberController {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    @GetMapping("index")
+    String index(){
+        return "index.html";
+    }
 
     @GetMapping("/register")
     String register(){
@@ -46,35 +60,62 @@ public class MemberController {
         return "redirect:/list";
     }
 
+    @GetMapping("/about")
+    String aboutPage(){
+        return "about.html";
+    }
+
     @GetMapping("/login")
     public String login(){
         return "login.html";
     }
 
-    @PostMapping("/loginCheck")
-    public String loginCheck(@RequestParam String username, @RequestParam String password){
-        var result = memberRepository.findByUsername(username);
-        //아이디 비교
-        if(result.isPresent()){
-            var user = result.get();
-            if(new BCryptPasswordEncoder().matches(password, user.getPassword())){
-                System.out.println("로그인 성공 : " + user.getDisplay_Name());
-                return "index.html";
-            }
-        }
-        System.out.println("아이디나 비밀번호가 틀립니다.");
-        return "redirect:/login?error?";
-    }
+//    @PostMapping("/loginCheck")
+//    public String loginCheck(@RequestParam String username, @RequestParam String password) {
+//        var result = memberRepository.findByUsername(username);
+//        if(result.isPresent()) {
+//            var user = result.get();
+//            if(new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+//                // 로그인 성공: Authentication 객체 생성 및 SecurityContextHolder에 설정
+//                List<GrantedAuthority> authorities = new ArrayList<>();
+//                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+//
+//                CustomUser customUser = new CustomUser(user.getUsername(), user.getPassword(), authorities, user.getDisplay_Name(), user.getId());
+//                Authentication authentication = new UsernamePasswordAuthenticationToken(customUser, null, authorities);
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//                System.out.println("로그인 성공 : " + user.getDisplay_Name());
+//                return "redirect:/index";
+//            }
+//        }
+//        System.out.println("아이디나 비밀번호가 틀립니다.");
+//        return "redirect:/login?error";
+//    }
 
-    @GetMapping("/my_page")
-    public String my_page(){
+//    @PostMapping("/loginCheck")
+//    public String loginCheck(@RequestParam String username, @RequestParam String password){
+//        var result = memberRepository.findByUsername(username);
+//        //아이디 비교
+//        if(result.isPresent()){
+//            var user = result.get();
+//            if(new BCryptPasswordEncoder().matches(password, user.getPassword())){
+//                System.out.println("로그인 성공 : " + user.getDisplay_Name());
+//                return "index.html";
+//            }
+//        }
+//        System.out.println("아이디나 비밀번호가 틀립니다.");
+//        return "redirect:/login?error?";
+//    }
+
+//    @GetMapping("/my_page")
+//    public String my_page(Authentication authentication){
 //        // Authentication 객체가 null인지 확인
 //        if (authentication == null || !authentication.isAuthenticated()) {
 //            return "register.html";
 //        }
 //
 //        // Principal에서 사용자 정보를 가져옵니다.
-//        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+//        CustomUser customUser = (CustomUser)authentication.getPrincipal();
 //
 //        // 사용자 정보 출력
 //        System.out.println("사용자 이름: " + customUser.getUsername());
@@ -131,26 +172,48 @@ public class MemberController {
 
         //----------------------------------------------------------------------------
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Object principal = authentication.getPrincipal();
+//
+//        System.out.println("Principal = " + principal.getClass().getName());
+//
+//        if (principal instanceof CustomUser) {
+//            CustomUser customUser = (CustomUser)principal;
+//            System.out.println("사용자 이름: " + customUser.getUsername());
+//            System.out.println("사용자 Display Name: " + customUser.getDisplay_Name());
+//            System.out.println("사용자 ID: " + customUser.getId());
+//        } else {
+//            System.out.println("사용자 정보가 CustomUser가 아닙니다.");
+//        }
+//
+//        if (authentication.isAuthenticated()) {
+//            return "mypage.html";
+//        } else {
+//            return "register.html";
+//        }
+//    }
 
-        System.out.println("Principal = " + principal.getClass().getName());
+@GetMapping("/my_page")
+public String myPage() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Object principal = authentication.getPrincipal();
 
-        if (principal instanceof CustomUser) {
-            CustomUser customUser = (CustomUser) principal;
-            System.out.println("사용자 이름: " + customUser.getUsername());
-            System.out.println("사용자 Display Name: " + customUser.getDisplay_Name());
-            System.out.println("사용자 ID: " + customUser.getId());
-        } else {
-            System.out.println("사용자 정보가 CustomUser가 아닙니다.");
-        }
+    System.out.println("Principal = " + principal.getClass().getName());
 
-        if (authentication.isAuthenticated()) {
-            return "mypage.html";
-        } else {
-            return "register.html";
-        }
+    if (principal instanceof CustomUser) {
+        CustomUser customUser = (CustomUser) principal;
+        System.out.println("사용자 이름: " + customUser.getUsername());
+        System.out.println("사용자 Display Name: " + customUser.getDisplay_Name());
+        System.out.println("사용자 ID: " + customUser.getId());
+
+        // 인증된 사용자라면 마이페이지를 보여줍니다.
+        return "mypage.html";
+    } else {
+        System.out.println("사용자 정보가 CustomUser가 아닙니다.");
+        // 사용자 정보가 CustomUser가 아닌 경우에는 에러 페이지 또는 로그인 페이지로 리다이렉트합니다.
+        return "redirect:/login";
     }
+}
 
     @GetMapping("/user/1")
     @ResponseBody
@@ -161,9 +224,43 @@ public class MemberController {
         var data = new MemberDto(result.getUsername(), result.getDisplay_Name());
         return data; //object를 data에 저장하면 데이터를 자동으로 JSON으로 변환 해준다.
     }
-}
 
-//Data trancefer object 데이터 변환
+//@PostMapping("login/jwt")
+//@ResponseBody
+//public String loginJWT(@RequestBody Map<String, String> data,
+//                       HttpServletResponse response) {
+//    var authToken = new UsernamePasswordAuthenticationToken(
+//            data.get("username"), data.get("password")
+//    );
+//
+//    var auth = authenticationManagerBuilder.getObject().authenticate(authToken);  // 인증 처리
+//    SecurityContextHolder.getContext().setAuthentication(auth);  // 인증 정보를 SecurityContext에 저장
+//
+//    var jwt = JwtUtil.createToken(SecurityContextHolder.getContext().getAuthentication());  // JWT 토큰 생성
+//    System.out.println(jwt);  // JWT 토큰 출력 (디버그용)
+//
+//    var cookie = new Cookie("jwt", jwt);
+//    cookie.setMaxAge(10000);
+//    cookie.setHttpOnly(true);
+//    cookie.setPath("/");  // 쿠키가 전송될 URL
+//    response.addCookie(cookie);
+//    return jwt;  // JWT 토큰 반환
+//}
+//
+//    @PostMapping("my_page/jwt")
+////    @ResponseBody
+//    public String mypageJWT(Authentication auth, Model model) {
+//        if (auth == null) {
+//            throw new RuntimeException("인증 정보가 없습니다.");
+//        }
+//
+//        var user = (CustomUser)auth.getPrincipal();
+//        model.addAttribute("username", user.getUsername());
+//        System.out.println(user.getUsername());
+//        return "mypage";
+//    }
+
+    //Data trancefer object 데이터 변환
 //object를 변환해서 전송하려면 Map또는 DTO클래스를 사용하여야 한다.
 //Map말고 DTO를 쓰는 이유는 보내는 데이터의 타입체크가 쉽다. // 재사용이 쉽다.
 //DTO를 너무 많이 써야 하는 경우에는 Mapping라이브러리를 사용하면 object끼리 변환이 쉬워진다.
@@ -175,4 +272,5 @@ class MemberDto{
         this.username = username;
         this.displayName = displayName;
     }
+}
 }

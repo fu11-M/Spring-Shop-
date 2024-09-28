@@ -1,0 +1,68 @@
+ body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* 헤더 스타일 */
+        .header {
+            background-color: #4B0082;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .header .logo h1 {
+            margin: 0;
+        }
+
+        .header .logo h1 a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #FFD700;
+        }
+
+        /* 회사 소개 섹션 */
+        .about-section {
+            background-color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 48px;
+            color: #4B0082;
+            margin-bottom: 30px;
+        }
+
+        .about-section p {
+            font-size: 20px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            color: #333;
+        }
+
+        /* 푸터 스타일 */
+        .footer {
+            background-color: #4B0082;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }

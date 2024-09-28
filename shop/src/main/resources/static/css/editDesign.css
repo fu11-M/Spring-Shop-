@@ -1,0 +1,76 @@
+/* 기본적인 페이지 레이아웃 */
+body {
+    background: linear-gradient(135deg, #D8BFD8 40%, #FFD700 100%);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+/* form 스타일 */
+form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* input 스타일 */
+input[type="text"], input[name="title"], input[name="price"] {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[name="title"]:focus, input[name="price"]:focus {
+    border-color: #4B0082;
+}
+
+/* 버튼 스타일 */
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #4B0082;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #6A0DAD;
+}
+
+/* 제목 스타일 */
+h2 {
+    color: #4B0082;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    margin-top: -30px;
+}
+
+/* 입력 필드 레이블 */
+label {
+    font-size: 16px;
+    color: #4B0082;
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    width: 100%;
+}

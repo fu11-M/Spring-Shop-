@@ -10,8 +10,8 @@ import java.util.Collection;
 @Getter
 @Setter
 public class CustomUser extends User {
-    private String display_Name;
-    private Integer id;
+    public String display_Name;
+    public Integer id;
 
     //    public Integer id;
     public CustomUser(
