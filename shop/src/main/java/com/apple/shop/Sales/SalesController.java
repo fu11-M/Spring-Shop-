@@ -42,21 +42,6 @@ public class SalesController {
         return "redirect:/list";
     }
 
-//    @GetMapping("/order/all")
-//    String getOrderAll(Model model) {
-////        List<Sales> result = salesRepository.findAll();
-////        System.out.println(result.get(0));
-////        return "list.html";
-////        ----------------------------------------------------
-//        List<Sales> result = salesRepository.customUserFindAll();
-//        System.out.println(result);
-//        var salesDto = new SalesDto();
-//        salesDto.itemName = result.get(0).getItemName();
-//        salesDto.price = result.get(0).getPrice();
-//        salesDto.username = result.get(0).getMember().getUsername();
-//        model.addAttribute("salesDto", salesDto);
-//        return "sales.html";
-//    }
 @GetMapping("/order/all")
 String getOrderAll(Model model) {
     // salesRepository에서 모든 Sales 데이터를 조회
@@ -81,11 +66,6 @@ String getOrderAll(Model model) {
     return "sales.html";  // 템플릿 파일 경로 반환
 }
 
-//        -----------------------------------------------------
-//        var result = memberRepository.findById(1);
-//        System.out.println(result);
-//        return "sales.html";
-//    }
 }
 
 class SalesDto {
