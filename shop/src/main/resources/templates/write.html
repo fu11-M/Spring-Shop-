@@ -33,35 +33,9 @@
 
 <!--    presignedURL 발급 요청-->
     <script>
-<!--        async function getURL(e){-->
-<!--            let file = e.files[0];-->
-
-<!--            //파일을 읽어 미리보기 이미지로 설정-->
-<!--            let reader = new FileReader();-->
-<!--            reader.onload = function(event){-->
-<!--                document.getElementById('preview').src = event.target.result;-->
-<!--            };-->
-<!--            reader.readAsDataURL(file);-->
-
-<!--            let name = encodeURIComponent(e.files[0].name);-->
-<!--            let result = await fetch('/presigned-url?filename=' + name);-->
-<!--            result = await result.text();-->
-<!--            console.log(result);-->
-
-<!--            let print = await fetch(result, {-->
-<!--                method : 'PUT',-->
-<!--                body : e.files[0]-->
-<!--            })-->
-
-<!--            console.log(print)-->
-<!--            console.log(print.url.split("?")[0])-->
-
-<!--            if(print.ok){-->
-<!--                document.querySelector('img').src = print.url.split("?")[0]-->
-<!--            }-->
-<!--        }-->
         async function getURL(e) {
-    let file = e.files[0];
+
+        let file = e.files[0];
 
     // Read file and set preview image
     let reader = new FileReader();
